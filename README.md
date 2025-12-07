@@ -50,11 +50,16 @@ npm install
 
 ### 3. Configuration rapide (10 minutes)
 
-📚 **Voir `QUICK_START.md` pour le guide complet**
+📚 **Voir [`QUICK_START.md`](QUICK_START.md) pour le guide complet**
 
-**En résumé** :
+**Script automatique (Linux/Mac/Git Bash) :**
+```bash
+bash scripts/setup.sh
+```
+
+**Configuration manuelle** :
 1. **Supabase** : Créer projet + exécuter SQL + récupérer clés
-2. **Riot API** : Obtenir Personal API Key (ne expire jamais)
+2. **Riot API** : Obtenir Personal API Key ([guide détaillé](docs/setup/riot-api-key.md))
 3. **Redis** (optionnel) : Créer base Upstash
 4. Créer `.env.local` avec vos clés
 
@@ -123,18 +128,32 @@ qspell/
 │   │   ├── auth/               # Formulaires auth
 │   │   ├── profile/            # Composants profil
 │   │   ├── tournament/         # Composants tournois
+│   │   ├── admin/              # Composants admin
+│   │   ├── coaching/           # Composants coaching
+│   │   ├── leaderboard/        # Classements
+│   │   ├── teams/              # Gestion d'équipes
 │   │   └── shared/             # Navigation, etc.
 │   └── lib/
 │       ├── supabase/           # Client Supabase
 │       ├── riot-api/           # Client Riot API
 │       ├── redis/              # Cache Redis
+│       ├── auth/               # Permissions & auth
 │       └── types/              # Types TypeScript
+├── docs/                        # 📚 Documentation organisée
+│   ├── setup/                  # Guides de configuration
+│   │   ├── riot-api-key.md    # Obtenir clé Riot API
+│   │   └── github.md           # Configuration Git/GitHub
+│   └── admin/                  # Documentation admin
+│       └── admin-guide.md      # Guide complet admin
+├── scripts/                     # Scripts utilitaires
+│   ├── setup.sh                # Script de setup automatique
+│   └── create-admin-accounts.js
 ├── supabase/
 │   └── migrations/             # Schéma SQL complet
-├── public/
+├── public/                      # Assets statiques
 ├── QSPELL_BRAND.md             # 🎨 Brand identity
 ├── QUICK_START.md              # ⚡ Configuration rapide
-├── OBTENIR_CLE_RIOT.md         # 🔑 Guide clé Riot
+├── RIOT_API.md                 # 🎮 Documentation API Riot
 └── README.md                   # Ce fichier
 ```
 
@@ -186,17 +205,22 @@ npm run lint
 
 ## 📖 Documentation
 
-### Configuration
-- 📋 **QUICK_START.md** - Configuration en 10 minutes
-- 🔑 **OBTENIR_CLE_RIOT.md** - Guide clé Riot API Personal
-- 📊 **SUPABASE_CLI.md** - Commandes Supabase
-- 📖 **SETUP.md** - Setup détaillé complet
+### 🚀 Démarrage
+- 📋 **[QUICK_START.md](QUICK_START.md)** - Configuration complète en 10 minutes
+- 🔑 **[docs/setup/riot-api-key.md](docs/setup/riot-api-key.md)** - Obtenir une clé Riot API
+- 💻 **[docs/setup/github.md](docs/setup/github.md)** - Configuration Git et GitHub
 
-### Technique
-- 🎮 **RIOT_API.md** - APIs Riot utilisées
-- 🎨 **QSPELL_BRAND.md** - Brand identity complète
-- 📈 **STATUS.md** - État du projet
-- 📝 **RESUME_CONFIG.md** - Récapitulatif configuration
+### 👑 Administration
+- 🛡️ **[docs/admin/admin-guide.md](docs/admin/admin-guide.md)** - Guide administrateur complet
+  - Système de rôles et permissions
+  - Gestion des utilisateurs
+  - Création de comptes admin
+  - Dashboard admin
+
+### 🎮 Technique
+- 🎯 **[RIOT_API.md](RIOT_API.md)** - Documentation API Riot détaillée
+- 🎨 **[QSPELL_BRAND.md](QSPELL_BRAND.md)** - Identité de marque complète
+- ⚙️ **[scripts/setup.sh](scripts/setup.sh)** - Script de setup automatique
 
 ---
 

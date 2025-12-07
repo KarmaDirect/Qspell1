@@ -50,3 +50,18 @@ next-env.d.ts
 
 # OS
 Thumbs.db
+
+# Documentation temporaire
+*.md.backup
+*.md.tmp
+docs/drafts/
+
+# Scripts temporaires
+scripts/old/
+scripts/temp/
+
+# Supabase local
+.supabase/
+**/supabase/.branches
+**/supabase/.temp
+

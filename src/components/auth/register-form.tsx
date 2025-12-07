@@ -7,13 +7,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Eye, EyeOff } from 'lucide-react'
 
 export function RegisterForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [displayName, setDisplayName] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const supabase = createClient()
@@ -85,6 +86,7 @@ export function RegisterForm() {
           disabled={loading}
           minLength={3}
           maxLength={20}
+          autoComplete="username"
         />
       </div>
 
@@ -98,6 +100,7 @@ export function RegisterForm() {
           onChange={(e) => setDisplayName(e.target.value)}
           disabled={loading}
           maxLength={50}
+          autoComplete="name"
         />
       </div>
 
@@ -111,21 +114,38 @@ export function RegisterForm() {
           onChange={(e) => setEmail(e.target.value)}
           required
           disabled={loading}
+          autoComplete="email"
         />
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="password">Mot de passe</Label>
-        <Input
-          id="password"
-          type="password"
-          placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          disabled={loading}
-          minLength={6}
-        />
+        <div className="relative">
+          <Input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            disabled={loading}
+            minLength={6}
+            className="pr-10"
+            autoComplete="new-password"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+            disabled={loading}
+          >
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
+          </button>
+        </div>
         <p className="text-xs text-muted-foreground">
           Minimum 6 caractères
         </p>

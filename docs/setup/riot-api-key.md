@@ -2,7 +2,7 @@
 
 ## 🎯 Quelle clé pour votre projet ?
 
-Pour la **Plateforme LoL Amateur**, je vous recommande **PERSONAL API KEY** :
+Pour **QSPELL**, je vous recommande **PERSONAL API KEY** :
 
 | Type | Expiration | Rate Limits | Utilisation | Recommandé ? |
 |------|------------|-------------|-------------|--------------|
@@ -38,12 +38,12 @@ Voici ce que vous devez écrire (copiez-collez et adaptez) :
 
 **Product Name:**
 ```
-LoL Amateur Platform
+QSPELL - LoL Amateur Platform
 ```
 
 **Product Description:**
 ```
-Plateforme communautaire francophone permettant aux joueurs League of Legends amateurs de :
+QSPELL est une plateforme communautaire francophone permettant aux joueurs League of Legends amateurs de :
 
 1. TOURNOIS : Créer et participer à des tournois communautaires avec système de brackets automatiques (simple/double élimination, round robin, swiss)
 
@@ -60,8 +60,9 @@ APIs Riot Games utilisées :
 - SUMMONER-V4 : Récupération des informations d'invocateur
 - LEAGUE-V4 : Statistiques ranked (Solo/Duo, Flex 5v5)
 - MATCH-V5 : Historique de matchs (pour vérifications de résultats de tournois)
+- CHAMPION-MASTERY-V4 : Top champions des joueurs
 
-Technologie : Next.js 14 + Supabase + TypeScript
+Technologie : Next.js 15 + Supabase + TypeScript + Redis
 Audience cible : Communauté francophone/internationale LoL amateur
 Utilisateurs prévus : 500-5000 joueurs actifs
 
@@ -75,7 +76,7 @@ http://localhost:8080
 
 **Production URL (si vous en avez une):**
 ```
-https://votre-domaine.com
+https://qspell.gg
 (ou laissez vide si pas encore déployé)
 ```
 
@@ -162,7 +163,7 @@ Si vous voulez juste tester aujourd'hui sans créer de Personal Key :
 
 ---
 
-## 🎯 Pour votre projet "LoL Amateur Platform"
+## 🎯 Pour votre projet QSPELL
 
 ### Phase 1 (Maintenant) : Personal API Key ✅
 - Parfaite pour développement et test avec amis
@@ -227,4 +228,3 @@ npm run dev
 ---
 
 **✨ Avec une Personal API Key, vous êtes prêt pour lancer votre plateforme ! ✨**
-
