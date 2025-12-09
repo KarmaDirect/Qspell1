@@ -3,7 +3,7 @@ import { createServerClient } from '@/lib/supabase/server'
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> | { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createServerClient()
@@ -27,8 +27,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    const resolvedParams = await (params instanceof Promise ? params : Promise.resolve(params))
-    const { id } = resolvedParams
+    const { id } = await params
 
     // Delete event
     const { error } = await supabase

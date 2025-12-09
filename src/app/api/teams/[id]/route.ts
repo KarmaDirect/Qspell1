@@ -3,7 +3,7 @@ import { createServerClient } from '@/lib/supabase/server'
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createServerClient()
@@ -16,7 +16,8 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const teamId = params.id
+    const { id } = await params
+    const teamId = id
 
     // Get team details
     const { data: team, error: teamError } = await supabase
@@ -86,7 +87,7 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createServerClient()
@@ -99,7 +100,8 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const teamId = params.id
+    const { id } = await params
+    const teamId = id
     const updates = await req.json()
 
     // Check if user is captain
@@ -150,7 +152,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createServerClient()
@@ -163,7 +165,8 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const teamId = params.id
+    const { id } = await params
+    const teamId = id
 
     // Check if user is captain
     const { data: team } = await supabase

@@ -3,7 +3,7 @@ import { createServerClient } from '@/lib/supabase/server'
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createServerClient()
@@ -16,7 +16,8 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const teamId = params.id
+    const { id } = await params
+    const teamId = id
     const { username, role = 'player' } = await req.json()
 
     // Check if user is captain
@@ -98,7 +99,7 @@ export async function POST(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createServerClient()
@@ -111,7 +112,8 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const teamId = params.id
+    const { id } = await params
+    const teamId = id
     const { memberId } = await req.json()
 
     // Check if user is captain
