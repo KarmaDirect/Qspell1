@@ -95,7 +95,32 @@ Si vous voulez juste tester rapidement :
 
 ---
 
-## 4️⃣ Upstash Redis (Cache - OPTIONNEL) - 2 minutes
+## 4️⃣ Stripe (Paiements) - 2 minutes
+
+**Nécessaire** pour les achats de QP (Quartz Points) dans l'application.
+
+### Obtenir les clés API Stripe de test
+
+1. Allez sur https://stripe.com et créez un compte (gratuit)
+2. Une fois connecté, allez dans le **Dashboard**
+3. Dans le menu de gauche, cliquez sur **"Developers"** → **"API keys"**
+4. Vous verrez deux clés :
+   - **Publishable key** (commence par `pk_test_...`) → Pour le frontend (optionnel)
+   - **Secret key** (commence par `sk_test_...`) → Pour le backend ⚠️ (secret)
+5. Cliquez sur **"Reveal test key"** pour voir la clé secrète
+6. Copiez la **Secret key** → `STRIPE_SECRET_KEY`
+
+📚 **Documentation Stripe** : https://stripe.com/docs/testing
+
+💡 **Cartes de test Stripe** :
+- Numéro : `4242 4242 4242 4242`
+- Date : N'importe quelle date future
+- CVC : N'importe quel 3 chiffres
+- Code postal : N'importe quel code postal
+
+---
+
+## 5️⃣ Upstash Redis (Cache - OPTIONNEL) - 2 minutes
 
 **Recommandé** pour de meilleures performances, mais **l'app fonctionne sans**.
 
@@ -112,7 +137,7 @@ Si vous voulez juste tester rapidement :
 
 ---
 
-## 5️⃣ Créer le fichier .env.local (1 minute)
+## 6️⃣ Créer le fichier .env.local (1 minute)
 
 À la racine du projet, créez `.env.local` :
 
@@ -124,6 +149,9 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 # Riot Games API
 RIOT_API_KEY=RGAPI-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
+# Stripe (Paiements)
+STRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # Upstash Redis (optionnel)
 UPSTASH_REDIS_URL=https://xxxxxx.upstash.io
@@ -137,7 +165,23 @@ NEXT_PUBLIC_APP_URL=http://localhost:8080
 
 ---
 
-## 6️⃣ Lancer l'application (30 secondes)
+## 7️⃣ Installer le package Stripe (30 secondes)
+
+Le package `stripe` doit être installé pour que l'application fonctionne :
+
+```bash
+npm install stripe
+```
+
+Si l'installation échoue, essayez :
+```bash
+npm cache clean --force
+npm install stripe --save
+```
+
+---
+
+## 8️⃣ Lancer l'application (30 secondes)
 
 ```bash
 npm run dev
@@ -272,10 +316,12 @@ npm run lint                   # Vérifier le code
 ### Configuration obligatoire
 - [ ] Node.js 18+ installé
 - [ ] Projet cloné et `npm install` exécuté
+- [ ] Package `stripe` installé (`npm install stripe`)
 - [ ] Projet Supabase créé
 - [ ] Toutes les migrations SQL exécutées
 - [ ] Clés Supabase copiées (3 clés)
 - [ ] Riot API Key obtenue (Personal recommandée)
+- [ ] Clé API Stripe de test obtenue (`STRIPE_SECRET_KEY`)
 - [ ] Fichier `.env.local` créé avec toutes les variables
 - [ ] `npm run dev` fonctionne sans erreur
 - [ ] Inscription + connexion fonctionnent
