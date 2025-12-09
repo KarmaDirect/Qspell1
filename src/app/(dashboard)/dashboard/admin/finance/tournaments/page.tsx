@@ -27,7 +27,7 @@ export default async function TournamentsFinancePage() {
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .single<{ role: string }>()
 
   if (!profile || !['admin', 'ceo'].includes(profile.role)) {
     redirect('/dashboard')
