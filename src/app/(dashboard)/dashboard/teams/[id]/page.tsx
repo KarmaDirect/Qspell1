@@ -62,35 +62,38 @@ export default async function TeamDetailPage({
   }
 
   // Fetch members (simplified query to avoid RLS issues)
-  type TeamMemberRow = { id: string; role: string; joined_at: string; profile_id: string }
-  const membersResult = await supabase
+  interface TeamMemberRow {
+    id: string
+    role: string
+    joined_at: string
+    profile_id: string
+  }
+  
+  const { data: membersResultData, error: membersError } = await supabase
     .from('team_members')
-    .select(`
-      id,
-      role,
-      joined_at,
-      profile_id
-    `)
+    .select('id, role, joined_at, profile_id')
     .eq('team_id', teamId)
-  const membersData = membersResult.data as TeamMemberRow[] | null
-  const membersError = membersResult.error
+  
+  const membersData = (membersResultData || []) as TeamMemberRow[]
 
   // Fetch profile details separately for each member
   let members: any[] = []
-  if (membersData && !membersError) {
+  if (membersData.length > 0 && !membersError) {
     for (const member of membersData) {
+      const profileId = member.profile_id as string
+      
       // Get profile
       const { data: profile } = await supabase
         .from('profiles')
         .select('id, username, avatar_url')
-        .eq('id', member.profile_id)
+        .eq('id', profileId)
         .single<{ id: string; username: string; avatar_url: string | null }>()
 
       // Get primary Riot account
       const { data: riotAccount } = await supabase
         .from('riot_accounts')
         .select('id, game_name, tag_line, region, is_primary')
-        .eq('profile_id', member.profile_id)
+        .eq('profile_id', profileId)
         .eq('is_primary', true)
         .single<{ id: string; game_name: string; tag_line: string; region: string; is_primary: boolean }>()
 
@@ -110,7 +113,7 @@ export default async function TeamDetailPage({
         role: member.role,
         joined_at: member.joined_at,
         profile: {
-          id: profile?.id || member.profile_id,
+          id: profile?.id || profileId,
           username: profile?.username || 'Unknown',
           avatar_url: profile?.avatar_url,
           riot_accounts: riotAccount ? [riotAccount] : [],
