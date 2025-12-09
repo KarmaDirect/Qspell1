@@ -201,6 +201,28 @@ export async function creditCash(
 }
 
 /**
+ * Débite du Cash du wallet d'un utilisateur
+ */
+export async function debitCash(
+  userId: string,
+  amount: number
+): Promise<boolean> {
+  const supabase = await createServerClient()
+  
+  const { data, error } = await supabase.rpc('debit_cash', {
+    p_user_id: userId,
+    p_amount: amount
+  })
+  
+  if (error) {
+    console.error('Error debiting cash:', error)
+    return false
+  }
+  
+  return data as boolean
+}
+
+/**
  * Vérifie si un utilisateur a un abonnement Premium actif
  */
 export async function hasPremiumSubscription(userId: string): Promise<boolean> {
