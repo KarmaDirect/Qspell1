@@ -39,14 +39,31 @@ export default async function TeamDetailPage({
       )
     `)
     .eq('id', teamId)
-    .single()
+    .single<{
+      id: string
+      name: string
+      tag: string
+      logo_url: string | null
+      captain_id: string
+      description: string | null
+      region: string | null
+      looking_for_players: boolean
+      captain: { id: string; username: string; avatar_url: string | null }
+      [key: string]: any
+    }>()
 
   if (teamError || !team) {
     notFound()
   }
 
+  // Ensure team has required properties
+  if (!team.name || !team.tag || !team.region || !team.captain) {
+    notFound()
+  }
+
   // Fetch members (simplified query to avoid RLS issues)
-  const { data: membersData, error: membersError } = await supabase
+  type TeamMemberRow = { id: string; role: string; joined_at: string; profile_id: string }
+  const membersResult = await supabase
     .from('team_members')
     .select(`
       id,
@@ -55,6 +72,8 @@ export default async function TeamDetailPage({
       profile_id
     `)
     .eq('team_id', teamId)
+  const membersData = membersResult.data as TeamMemberRow[] | null
+  const membersError = membersResult.error
 
   // Fetch profile details separately for each member
   let members: any[] = []
@@ -65,7 +84,7 @@ export default async function TeamDetailPage({
         .from('profiles')
         .select('id, username, avatar_url')
         .eq('id', member.profile_id)
-        .single()
+        .single<{ id: string; username: string; avatar_url: string | null }>()
 
       // Get primary Riot account
       const { data: riotAccount } = await supabase
@@ -73,7 +92,7 @@ export default async function TeamDetailPage({
         .select('id, game_name, tag_line, region, is_primary')
         .eq('profile_id', member.profile_id)
         .eq('is_primary', true)
-        .single()
+        .single<{ id: string; game_name: string; tag_line: string; region: string; is_primary: boolean }>()
 
       // Get ranked stats (if riot account exists)
       let playerStats: any[] = []
@@ -105,9 +124,25 @@ export default async function TeamDetailPage({
 
   const isCaptain = team.captain_id === user.id
 
+  // Transform team to match component types
+  const teamForHeader = {
+    name: team.name,
+    tag: team.tag,
+    logo_url: team.logo_url || undefined,
+    region: team.region || '',
+    description: team.description || undefined,
+    looking_for_players: team.looking_for_players,
+    captain: team.captain,
+  }
+
+  const teamForActions = {
+    id: team.id,
+    name: team.name,
+  }
+
   return (
     <div className="container py-8">
-      <TeamHeader team={team} isCaptain={isCaptain} />
+      <TeamHeader team={teamForHeader} isCaptain={isCaptain} />
       
       <div className="grid gap-6 md:grid-cols-3 mt-8">
         <div className="md:col-span-2">
@@ -121,7 +156,7 @@ export default async function TeamDetailPage({
         
         <div>
           <TeamActions 
-            team={team}
+            team={teamForActions}
             isCaptain={isCaptain}
           />
         </div>
